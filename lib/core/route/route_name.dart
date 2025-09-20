@@ -1,4 +1,4 @@
-enum RouteName { home, signin, signup }
+enum RouteName { home, signin, signup, character }
 
 extension RouteNameExtension on RouteName {
   String path() {
@@ -9,6 +9,8 @@ extension RouteNameExtension on RouteName {
         return "/signin";
       case RouteName.signup:
         return "/signup";
+      case RouteName.character:
+        return "/character";
     }
   }
 }

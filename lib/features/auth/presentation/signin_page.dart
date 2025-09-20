@@ -1,4 +1,6 @@
+import 'package:arcadia_rpg/core/route/route_name.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
@@ -49,7 +51,7 @@ class SignInPage extends StatelessWidget {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
-                              // TODO: Implement login
+                              context.go(RouteName.character.path());
                             },
                             child: const Text("Login"),
                           ),
