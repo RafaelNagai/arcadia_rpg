@@ -5,7 +5,7 @@ import 'package:arcadia_rpg/features/home/presentation/home_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-final isLoggedIn = true;
+final isLoggedIn = false;
 
 final routeProvider = Provider<GoRouter>(
   (ref) => GoRouter(
@@ -27,8 +27,8 @@ final routeProvider = Provider<GoRouter>(
     redirect: (context, state) {
       final loggingIn = state.fullPath == RouteName.signin.path();
 
-      // Qualquer rota que comece com /character
-      if (!isLoggedIn && state.fullPath!.startsWith('/character')) {
+      if (!isLoggedIn &&
+          state.fullPath!.startsWith(RouteName.character.path())) {
         return RouteName.signin.path();
       }
 
