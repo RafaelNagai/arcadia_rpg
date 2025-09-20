@@ -7,6 +7,7 @@ class ArcadiaTheme {
       seedColor: const Color.fromARGB(255, 87, 224, 199),
       brightness: Brightness.light,
     ),
+    scaffoldBackgroundColor: const Color.fromARGB(255, 87, 224, 199),
   );
 
   static final dark = ThemeData(
@@ -15,5 +16,6 @@ class ArcadiaTheme {
       seedColor: const Color.fromARGB(255, 42, 108, 96),
       brightness: Brightness.dark,
     ),
+    scaffoldBackgroundColor: const Color.fromARGB(255, 47, 121, 107),
   );
 }

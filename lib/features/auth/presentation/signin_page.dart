@@ -1,3 +1,4 @@
+import 'package:arcadia_rpg/core/route/route_manager.dart';
 import 'package:arcadia_rpg/core/route/route_name.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -58,9 +59,7 @@ class SignInPage extends StatelessWidget {
                         ),
                         const SizedBox(height: 12),
                         TextButton(
-                          onPressed: () {
-                            // TODO: Forgot password
-                          },
+                          onPressed: () {},
                           child: const Text("Forgot your password?"),
                         ),
                       ],

@@ -20,6 +20,12 @@ class HomePage extends StatelessWidget {
                   },
                   child: Text('Character'),
                 ),
+                ElevatedButton(
+                  onPressed: () {
+                    context.go(RouteName.signin.path());
+                  },
+                  child: Text('Sign In'),
+                ),
               ],
             ),
           );
