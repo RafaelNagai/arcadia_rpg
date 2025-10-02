@@ -24,8 +24,8 @@ class DioClient implements HttpClient {
     try {
       final response = await _dio.get(path, queryParameters: queryParameters);
       return onConvert(response as Map<String, dynamic>);
-    } on DioException catch (e) {
-      throw e;
+    } on DioException catch (_) {
+      rethrow;
     }
   }
 }
