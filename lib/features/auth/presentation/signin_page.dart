@@ -1,12 +1,12 @@
-import 'package:arcadia_rpg/core/route/route_name.dart';
+import 'package:arcadia_rpg/features/auth/presentation/providers/auth_provider.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SignInPage extends StatelessWidget {
+class SignInPage extends ConsumerWidget {
   const SignInPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: LayoutBuilder(
         builder: (context, constraints) {
@@ -51,7 +51,7 @@ class SignInPage extends StatelessWidget {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
-                              context.go(RouteName.character.path());
+                              ref.read(authProvider.notifier).signIn("", "");
                             },
                             child: const Text("Login"),
                           ),

@@ -1,5 +1,5 @@
-import 'package:arcadia_rpg/core/route/route_manager.dart';
 import 'package:arcadia_rpg/core/route/route_name.dart';
+import 'package:arcadia_rpg/features/auth/presentation/providers/auth_provider.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 class GoGuard {
   final List<String> paths; //character
   final String redirectTo; //signin
-  final bool Function() onValidate;
+  final bool Function(Ref ref) onValidate;
 
   GoGuard({
     required this.paths,
@@ -25,15 +25,15 @@ class GoRouterGuard {
     GoGuard(
       paths: [RouteName.signin.path()],
       redirectTo: RouteName.home.path(),
-      onValidate: () {
-        return !isLoggedIn;
+      onValidate: (ref) {
+        return ref.read(authProvider).token == null;
       },
     ),
     GoGuard(
       paths: [RouteName.character.path()],
       redirectTo: RouteName.signin.path(),
-      onValidate: () {
-        return isLoggedIn;
+      onValidate: (ref) {
+        return ref.read(authProvider).token != null;
       },
     ),
   ];
@@ -41,7 +41,7 @@ class GoRouterGuard {
   String? routeGuard(BuildContext context, GoRouterState state, Ref ref) {
     for (var guard in guards) {
       if (guard.paths.any((element) => state.fullPath!.contains(element))) {
-        if (!guard.onValidate()) {
+        if (!guard.onValidate(ref)) {
           return guard.redirectTo;
         }
       }

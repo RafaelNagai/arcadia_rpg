@@ -6,7 +6,7 @@ import 'package:arcadia_rpg/features/home/presentation/home_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-final isLoggedIn = false;
+//final isLoggedIn = false;
 
 final routeProvider = Provider<GoRouter>(
   (ref) => GoRouter(
