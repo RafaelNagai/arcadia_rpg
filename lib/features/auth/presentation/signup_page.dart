@@ -5,16 +5,17 @@ import 'package:arcadia_rpg/features/auth/presentation/providers/auth_provider.d
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SignInPage extends ConsumerStatefulWidget {
-  const SignInPage({super.key});
+class SignUpPage extends ConsumerStatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  ConsumerState<SignInPage> createState() => _SignInPageState();
+  ConsumerState<SignUpPage> createState() => _SignUnPageState();
 }
 
-class _SignInPageState extends ConsumerState<SignInPage> {
-  final emailController = TextEditingController(text: "rafakenji23@gmail.com");
-  final passwordController = TextEditingController(text: "12345678");
+class _SignUnPageState extends ConsumerState<SignUpPage> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final usernameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,14 @@ class _SignInPageState extends ConsumerState<SignInPage> {
         mainAxisSize: MainAxisSize.min,
         children: [
           const FlutterLogo(size: 80),
+          const SizedBox(height: 32),
+          TextField(
+            controller: usernameController,
+            decoration: const InputDecoration(
+              labelText: "Username",
+              border: OutlineInputBorder(),
+            ),
+          ),
           const SizedBox(height: 32),
           TextField(
             controller: emailController,
@@ -47,24 +56,21 @@ class _SignInPageState extends ConsumerState<SignInPage> {
               onPressed: () {
                 ref
                     .read(authProvider.notifier)
-                    .signIn(emailController.text, passwordController.text);
+                    .signUp(
+                      usernameController.text,
+                      emailController.text,
+                      passwordController.text,
+                    );
               },
-              child: const Text("Login"),
+              child: const Text("Create Account"),
             ),
           ),
           const SizedBox(height: 12),
           TextButton(
             onPressed: () {
-              ref.read(routeProvider).push(RouteName.forgotPassword.path());
+              ref.read(routeProvider).go(RouteName.signin.path());
             },
-            child: const Text("Forgot your password?"),
-          ),
-          const SizedBox(height: 12),
-          TextButton(
-            onPressed: () {
-              ref.read(routeProvider).go(RouteName.signup.path());
-            },
-            child: const Text("Sign Up"),
+            child: const Text("Sign In"),
           ),
         ],
       ),

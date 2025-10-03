@@ -1,4 +1,11 @@
-enum RouteName { home, signin, signup, character }
+enum RouteName {
+  home,
+  signin,
+  signup,
+  forgotPassword,
+  resetPassword,
+  character,
+}
 
 extension RouteNameExtension on RouteName {
   String path() {
@@ -9,6 +16,10 @@ extension RouteNameExtension on RouteName {
         return "/signin";
       case RouteName.signup:
         return "/signup";
+      case RouteName.forgotPassword:
+        return "/forgot-password";
+      case RouteName.resetPassword:
+        return "/reset-password";
       case RouteName.character:
         return "/character";
     }

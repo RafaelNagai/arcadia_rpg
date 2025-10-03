@@ -27,4 +27,32 @@ class AuthNotifier extends Notifier<Auth> {
       ref.read(routeProvider).go(RouteName.character.path());
     }
   }
+
+  signUp(String userName, String email, String password) async {
+    final authRepository = ref.read(authRepositoryProvider);
+    final auth = await authRepository.signUp(
+      username: userName,
+      email: email,
+      password: password,
+    );
+    if (auth.token != null) {
+      state = auth;
+      ref.read(routeProvider).go(RouteName.character.path());
+    }
+  }
+
+  signOut() {
+    state = Auth();
+    ref.read(routeProvider).go(RouteName.home.path());
+  }
+
+  forgetPassword(String email) async {
+    final authRepository = ref.read(authRepositoryProvider);
+    await authRepository.forgotPassword(email: email);
+  }
+
+  resetPassword(String token, String newPassword) async {
+    final authRepository = ref.read(authRepositoryProvider);
+    await authRepository.resetPassword(token: token, newPassword: newPassword);
+  }
 }

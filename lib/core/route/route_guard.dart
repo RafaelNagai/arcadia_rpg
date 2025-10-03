@@ -23,7 +23,7 @@ class GoRouterGuard {
 
   final guards = [
     GoGuard(
-      paths: [RouteName.signin.path()],
+      paths: [RouteName.signin.path(), RouteName.signup.path()],
       redirectTo: RouteName.home.path(),
       onValidate: (ref) {
         return ref.read(authProvider).token == null;
