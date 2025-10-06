@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:arcadia_rpg/core/network/http_client.dart';
 import 'package:arcadia_rpg/features/auth/data/responses/auth_response.dart';
 import 'package:arcadia_rpg/features/auth/domain/entities/auth.dart';
+import 'package:arcadia_rpg/features/auth/domain/entities/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class AuthRepository {
   Future<Auth> signIn({required String email, required String password});
@@ -17,9 +21,14 @@ abstract class AuthRepository {
     required String token,
     required String newPassword,
   });
+
+  Future<Auth?> loadAuth();
+  Future<void> saveAuth(Auth auth);
+  Future<void> clearAuth();
 }
 
 class AuthRepositoryImpl implements AuthRepository {
+  static const _authKey = 'auth_data';
   final HttpClient _httpClient;
 
   AuthRepositoryImpl(this._httpClient);
@@ -69,5 +78,30 @@ class AuthRepositoryImpl implements AuthRepository {
       data: {'newPassword': newPassword},
       onConvert: (json) => ResetPasswordResponse.fromJson(json!),
     );
+  }
+
+  @override
+  Future<Auth?> loadAuth() async {
+    final prefs = await SharedPreferences.getInstance();
+    final jsonStr = prefs.getString(_authKey);
+    if (jsonStr == null) return null;
+
+    final data = jsonDecode(jsonStr);
+    final user = data['user'] != null ? User.fromJson(data['user']) : null;
+
+    return Auth(token: data['token'], user: user);
+  }
+
+  @override
+  Future<void> saveAuth(Auth auth) async {
+    final prefs = await SharedPreferences.getInstance();
+    final data = {'token': auth.token, 'user': auth.user?.toJson()};
+    await prefs.setString(_authKey, jsonEncode(data));
+  }
+
+  @override
+  Future<void> clearAuth() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_authKey);
   }
 }

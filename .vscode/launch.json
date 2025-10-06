@@ -2,19 +2,19 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "arcadia_rpg (mobile)",
+      "name": "arcadia (mobile)",
       "request": "launch",
       "type": "dart",
       "program": "lib/main.dart",       // entrypoint do mobile
       "flutterMode": "debug"
     },
     {
-      "name": "arcadia_rpg (web)",
+      "name": "arcadia (web)",
       "request": "launch",
       "type": "dart",
       "program": "lib/main_web.dart",  // entrypoint do web
       "deviceId": "chrome",             // força rodar no Chrome
-      "flutterMode": "debug"
+      "flutterMode": "debug",
     },
   ]
 }

@@ -10,39 +10,62 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
   return AuthRepositoryImpl(dioNotifier);
 });
 
-final authProvider = NotifierProvider<AuthNotifier, Auth>(AuthNotifier.new);
+final authProvider = AsyncNotifierProvider<AuthNotifier, Auth?>(
+  AuthNotifier.new,
+);
 
-class AuthNotifier extends Notifier<Auth> {
+class AuthNotifier extends AsyncNotifier<Auth?> {
   @override
-  Auth build() => Auth();
+  Future<Auth?> build() async {
+    final repo = ref.read(authRepositoryProvider);
+    return await repo.loadAuth();
+  }
 
   signIn(String userName, String password) async {
+    state = const AsyncLoading();
     final authRepository = ref.read(authRepositoryProvider);
-    final auth = await authRepository.signIn(
-      email: userName,
-      password: password,
-    );
-    if (auth.token != null) {
-      state = auth;
-      ref.read(routeProvider).go(RouteName.character.path());
+    try {
+      final auth = await authRepository.signIn(
+        email: userName,
+        password: password,
+      );
+      if (auth.token != null) {
+        await authRepository.saveAuth(auth);
+        state = AsyncData(auth);
+        ref.read(routeProvider).go(RouteName.character.path());
+      } else {
+        state = AsyncError('Invalid credentials', StackTrace.current);
+      }
+    } catch (e, st) {
+      state = AsyncError(e, st);
     }
   }
 
   signUp(String userName, String email, String password) async {
+    state = const AsyncLoading();
     final authRepository = ref.read(authRepositoryProvider);
-    final auth = await authRepository.signUp(
-      username: userName,
-      email: email,
-      password: password,
-    );
-    if (auth.token != null) {
-      state = auth;
-      ref.read(routeProvider).go(RouteName.character.path());
+    try {
+      final auth = await authRepository.signUp(
+        username: userName,
+        email: email,
+        password: password,
+      );
+      if (auth.token != null) {
+        await authRepository.saveAuth(auth);
+        state = AsyncData(auth);
+        ref.read(routeProvider).go(RouteName.character.path());
+      } else {
+        state = AsyncError('Failed to sign up', StackTrace.current);
+      }
+    } catch (e, st) {
+      state = AsyncError(e, st);
     }
   }
 
   signOut() {
-    state = Auth();
+    final authRepository = ref.read(authRepositoryProvider);
+    authRepository.clearAuth();
+    state = const AsyncData(null);
     ref.read(routeProvider).go(RouteName.home.path());
   }
 

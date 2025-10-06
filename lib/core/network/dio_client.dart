@@ -1,10 +1,11 @@
 import 'package:arcadia_rpg/core/network/http_client.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final dioProvider = Provider<HttpClient>((ref) {
-  return DioClient(baseUrl: dotenv.env['API_URL'] ?? 'http://localhost:3000');
+  return DioClient(
+    baseUrl: 'https://international-dasha-arcadia-rpg-4231dd2b.koyeb.app/api',
+  );
 });
 
 class DioClient implements HttpClient {
